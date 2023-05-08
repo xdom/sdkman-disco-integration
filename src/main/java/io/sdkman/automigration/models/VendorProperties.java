@@ -8,7 +8,8 @@ public record VendorProperties(List<OS> linux,
                                List<OS> windows) {
 
     public record OS(String architecture,
-                     String archiveType) {
+                     String archiveType,
+                     String libc) {
 
     }
 }

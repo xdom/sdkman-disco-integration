@@ -49,7 +49,8 @@ public class JavaMigration {
 	public void execute(Map<String, List<String>> queryParams, Boolean defaultCandidate) {
 		var foojayQueryParams = Stream
 				.concat(queryParams.entrySet().stream(), FoojayClient.defaultQueryParams.entrySet().stream())
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+          (left, right) -> left.isEmpty() ? right : left));
 
 		var resultPackageResponse = this.foojayClient.queryPackages(this.foojayProperties.url(), foojayQueryParams);
 		// @formatter:off

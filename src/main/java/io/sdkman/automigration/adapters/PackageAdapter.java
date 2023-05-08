@@ -5,6 +5,7 @@ import io.sdkman.automigration.models.FoojayQueryParams;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,6 +45,9 @@ public class PackageAdapter {
 				foojayQueryParams.javaVersion());
 
 		var arm32QueryParams = addQueryParamsIfARM(foojayQueryParams);
+    var libcTypes = Optional.ofNullable(foojayQueryParams.vendorOsProperties().libc())
+        .stream()
+        .collect(Collectors.toList());
 		// @formatter:off
         var defaultQueryParams = Map.of("version", List.of(foojayQueryParams.version()),
                 "release_status", List.of(foojayQueryParams.releaseStatus()),
@@ -51,7 +55,9 @@ public class PackageAdapter {
                 "architecture", List.of(foojayQueryParams.vendorOsProperties().architecture()),
                 "archive_type", List.of(foojayQueryParams.vendorOsProperties().archiveType()),
                 "distribution", List.of(foojayQueryParams.distribution()),
-                "javafx_bundled", List.of(String.valueOf(foojayQueryParams.javafxBundled())));
+                "javafx_bundled", List.of(String.valueOf(foojayQueryParams.javafxBundled())),
+                "libc_type", libcTypes
+        );
         // @formatter:on
 
 		return Stream
